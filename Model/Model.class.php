@@ -46,8 +46,6 @@
 			
 					$insertion = $this->unPDO->prepare($requete_insertion);
 					$insertion->execute($donnees_insertion);
-			
-					// Confirmer l'insertion
 					echo "L'utilisateur a été ajouté avec succès.";
 				}
 			} 
@@ -72,7 +70,6 @@
 
         if(isset($_SESSION['iduser'])) 
 			{
-            	// Retournez l'ID de l'utilisateur
             	return $_SESSION['iduser'];
         	}
     	}
@@ -157,28 +154,39 @@
 		}
 		
 		public function selectIdAnnonces($idUtilisateur)
-{
-    // Requête pour sélectionner les annonces de l'utilisateur spécifié par son ID
-    $requete = "SELECT annonce.*, 
-                marque.nom AS nom_marque, 
-                ref.nom AS nom_ref, 
-                user.nom AS nom_user,
-                user.prenom AS prenom_user
-                FROM annonce
-                LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
-                LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
-                LEFT JOIN user ON annonce.iduser = user.iduser
-                WHERE annonce.iduser = :idUtilisateur;";
+		{
+			try {
+				$requete = "SELECT annonce.*,
+							marque.nom AS nom_marque, 
+							ref.nom AS nom_ref, 
+							user.nom AS nom_user,
+							user.prenom AS prenom_user
+							FROM annonce
+							LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
+							LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
+							LEFT JOIN user ON annonce.iduser = user.iduser
+							WHERE annonce.iduser = :idUtilisateur;";
+		
+				$select = $this->unPDO->prepare($requete);
+				$select->bindParam(":idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
+				$select->execute();
+		
+				// Gestion des erreurs PDO
+				if ($select === false) 
+				{
+					// Vous pouvez gérer l'erreur ici
+					return false;
+				}
+		
+				// Retourner le résultat
+				return $select->fetchAll(PDO::FETCH_ASSOC);
+			} 
+			catch (PDOException $e) 
+			{
 
-    // Préparer et exécuter la requête
-    $select = $this->unPDO->prepare($requete);
-    $select->bindParam(":idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
-    $select->execute();
-
-    // Retourner le résultat
-    return $select->fetchAll();
-}
-
+				return false;
+			}
+		}
 
 
 		function telechargerPhoto($nomDuChampFichier) 
