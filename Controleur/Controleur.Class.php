@@ -45,15 +45,15 @@
 		public function idsession()
 		{
 			$this->unModele->idsession();
+		}		
+		public function selectIdAnnonces($idUtilisateur)
+		{
+			return $this->unModele->selectIdAnnonces($idUtilisateur);
 		}
+
 		public function telechargerPhoto($nomDuChampFichier)
 		{
 			$this->unModele->telechargerPhoto($nomDuChampFichier);
 		}
-		public function selectIdAnnonces($iduser)
-		{
-			$this->unModele->selectIdAnnonces($iduser);
-		}
-
 	}
 ?>
