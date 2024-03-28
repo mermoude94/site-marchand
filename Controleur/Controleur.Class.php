@@ -50,7 +50,10 @@
 		{
 			return $this->unModele->selectIdAnnonces($idUtilisateur);
 		}
-
+		public function selectUneAnnonce($Post)
+		{
+			return $this->unModele->selectUneAnnonce($Post);
+		}
 		public function telechargerPhoto($nomDuChampFichier)
 		{
 			$this->unModele->telechargerPhoto($nomDuChampFichier);
