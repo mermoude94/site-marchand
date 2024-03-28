@@ -187,6 +187,44 @@
 				return false;
 			}
 		}
+		public function selectUneAnnonce($Post)
+		{
+
+			$idAnnonce = $Post['idAnnonce'];
+
+
+			try {
+				$requete = "SELECT annonce.*,
+							marque.nom AS nom_marque, 
+							ref.nom AS nom_ref, 
+							user.nom AS nom_user,
+							user.prenom AS prenom_user
+							FROM annonce
+							LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
+							LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
+							LEFT JOIN user ON annonce.iduser = user.iduser
+							WHERE Id_Annonce = :idAnnonce;";
+		
+				$select = $this->unPDO->prepare($requete);
+				$select->bindParam(":idAnnonce", $idAnnonce, PDO::PARAM_INT);
+				$select->execute();
+
+				// Gestion des erreurs PDO
+				if ($select === false) 
+				{
+					// Vous pouvez gérer l'erreur ici
+					return false;
+				}
+		
+				// Retourner le résultat
+				return $select->fetchAll(PDO::FETCH_ASSOC);
+			} 
+			catch (PDOException $e) 
+			{
+
+				return false;
+			}
+		}
 
 
 		function telechargerPhoto($nomDuChampFichier) 
