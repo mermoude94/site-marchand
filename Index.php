@@ -78,7 +78,8 @@
 			case 3 : require_once ("Gestion_user_Annonce.php"); break;
 			case 4 : require_once ("Gestion_AjoutAnnonce.php"); break;
 			case 5 : require_once ("Gestion_MonCompte.php"); break;
-			case 6 : session_destroy();
+			case 6 : require_once ("Gestion_UneAnnonce.php"); break;
+			case 7 : session_destroy();
 			unset($_SESSION['email']);
 			header("Location: index.php?page=1");
 			break;
