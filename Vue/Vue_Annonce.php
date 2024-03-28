@@ -2,6 +2,7 @@
     <h2>Annonce en cours</h2>
 <div class='LesAnnonce'>
 	<?php
+	require_once("Gestion_LocationUneAnnonce.php");
 		foreach ($lesAnnonce as $uneAnnonce) 
         {
 			echo "<div class='UneAnnonce'>";
@@ -24,6 +25,12 @@
 						echo "<tr>";
 						echo "<td>".$uneAnnonce['description']."Є</td>";
 						echo "</tr>";
+						echo "<form method='post'>";
+							echo "<tr>";
+							echo "<td><input type='hidden' name='idAnnonce' value=".$uneAnnonce['Id_annonce']."></td>";
+							echo "<td><input type='submit' name='selectUneAnnonce' value='Valider'></td>";
+							echo "</tr>";
+						echo "</form>";
 				echo "</table>";
 			echo "</div>";
 		}
