@@ -26,6 +26,10 @@
 		{
 			$this->unModele->supprimercompte($email);
 		}
+		public function supprimerannonce($Post)
+		{
+			$this->unModele->supprimerannonce($Post);
+		}
 		public function selectAllAnnonce()
 		{
 			return $this->unModele->selectAllAnnonce();
@@ -41,6 +45,10 @@
 		public function insertAnnonce($tab)
 		{
 			$this->unModele->insertAnnonce($tab);
+		}
+		public function signaler($tab)
+		{
+			$this->unModele->signaler($tab);
 		}
 		public function idsession()
 		{
