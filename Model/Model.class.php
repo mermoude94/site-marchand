@@ -55,7 +55,22 @@
 				echo "Erreur lors de l'insertion dans la base de données : " . $e->getMessage();
 			}
 		}
-
+		public function signaler($tab)
+		{
+			try
+			{
+				$requete_insertion = "INSERT INTO signalement (description, Id_annonce, idsignaler , idplaignant) VALUES (:description, :Id_annonce, :idsignaler, :idplaignant)";
+				$donnees_insertion = array(":description" => $tab['description'], ":Id_annonce" => $tab['Id_annonce'], ":idsignaler" => $tab['idsignaler'], ":idplaignant" => $tab['idplaignant']);
+				$insertion = $this->unPDO->prepare($requete_insertion);
+				$insertion->execute($donnees_insertion);
+				echo "Signalement pris en compte."; 
+			}
+			catch (PDOException $e) 
+			{
+				// Afficher l'erreur PDO
+				echo "Erreur lors de l'insertion dans la base de données : " . $e->getMessage();
+			}
+		}
 		public function verifConnexion($email, $mdp)
 		{
 			$requete="select * from user where email=:email and mdp=:mdp ";
@@ -94,6 +109,33 @@
 				else 
 				{
             		echo "Aucun utilisateur trouvé avec cet email.";
+        		}
+    		} 
+    		catch (PDOException $e) 
+    		{
+        		echo "Erreur lors de la suppression de l'utilisateur : " . $e->getMessage();
+    		}
+		}
+		public function supprimerannonce($Post)
+		{
+			$Id_annonce = $Post;
+    		try 
+    		{	
+        		// Préparer la requête de suppression
+       			$requete = "DELETE FROM annonce WHERE Id_annonce = :Id_annonce;";
+        		$donnees = array(":Id_annonce" => $Id_annonce);
+        
+        		// Exécuter la requête de suppression
+        		$suppression = $this->unPDO->prepare($requete);
+       			$suppression->execute($donnees);
+				
+        		if ($suppression->rowCount() > 0) 
+				{
+            		echo "Annonce supprimé avec succès.";
+        		} 
+				else 
+				{
+            		echo "Aucune annonce trouvé.";
         		}
     		} 
     		catch (PDOException $e) 
