@@ -23,12 +23,12 @@
 						echo "<td>".$uneAnnonce['Prix']."Є</td>";
 						echo "</tr>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['description']."Є</td>";
+						echo "<td>".$uneAnnonce['description']."</td>";
 						echo "</tr>";
 						echo "<form method='post'>";
 							echo "<tr>";
 							echo "<td><input type='hidden' name='idAnnonce' value=".$uneAnnonce['Id_annonce']."></td>";
-							echo "<td><input type='submit' name='selectUneAnnonce' value='Valider'></td>";
+							echo "<td><input type='submit' name='selectUneAnnonce' value='Voir'></td>";
 							echo "</tr>";
 						echo "</form>";
 				echo "</table>";
