@@ -1,6 +1,7 @@
 <?php
 
 echo "<div class='UneAnnonce'>";
+
 		foreach($uneAnnonce as $annonce)
 		{
 			echo "<table>";
@@ -23,5 +24,5 @@ echo "<div class='UneAnnonce'>";
 					echo "<td>".$annonce['description']."</td>";
 				echo "</tr>";
 			echo "</table>";
-			}	
+			}
 echo "</div>";
