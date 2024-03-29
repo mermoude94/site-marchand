@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 20 mars 2024 à 09:49
+-- Généré le : ven. 29 mars 2024 à 16:59
 -- Version du serveur : 10.4.27-MariaDB
 -- Version de PHP : 8.2.0
 
@@ -42,14 +42,9 @@ CREATE TABLE `annonce` (
 --
 
 INSERT INTO `annonce` (`iduser`, `Id_annonce`, `Id_marque`, `Id_ref`, `Prix`, `Id_Photo`, `description`) VALUES
-(1, 1, 1, 1, '10000.00', 'photo1.jpg', NULL),
 (1, 2, 2, 6, '8000.00', 'photo2.jpg', NULL),
 (7, 3, 3, 11, '5000.00', 'photo3.jpg', NULL),
-(10, 4, 4, 16, '20000.00', 'photo4.jpg', NULL),
-(7, 5, 5, 22, '12000.00', 'photo5.jpg', NULL),
-(1, 6, 1, 1, '1.00', NULL, '1'),
-(10, 18, 1, 1, '2000.00', NULL, 'jkzlvcmz,vze'),
-(10, 19, 1, 1, '99999999.99', NULL, 'mljfkzfg*pzefg');
+(7, 5, 5, 22, '12000.00', 'photo5.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -87,6 +82,17 @@ INSERT INTO `marque` (`Id_marque`, `Nom`) VALUES
 (18, 'IWC Schaffhausen'),
 (19, 'Vacheron Constantin'),
 (20, 'Bell & Ross');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `photo`
+--
+
+CREATE TABLE `photo` (
+  `Id_Photo` int(11) NOT NULL,
+  `nom_fichier` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -134,6 +140,27 @@ INSERT INTO `ref` (`Id_marque`, `Id_ref`, `Nom`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `signalement`
+--
+
+CREATE TABLE `signalement` (
+  `Id_signalement` int(11) NOT NULL,
+  `description` text DEFAULT NULL,
+  `Id_annonce` int(11) NOT NULL,
+  `idplaignant` int(11) NOT NULL,
+  `idsignaler` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `signalement`
+--
+
+INSERT INTO `signalement` (`Id_signalement`, `description`, `Id_annonce`, `idplaignant`, `idsignaler`) VALUES
+(1, 'cqscq', 2, 10, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `user`
 --
 
@@ -173,10 +200,22 @@ ALTER TABLE `marque`
   ADD PRIMARY KEY (`Id_marque`);
 
 --
+-- Index pour la table `photo`
+--
+ALTER TABLE `photo`
+  ADD PRIMARY KEY (`Id_Photo`);
+
+--
 -- Index pour la table `ref`
 --
 ALTER TABLE `ref`
   ADD PRIMARY KEY (`Id_marque`,`Id_ref`);
+
+--
+-- Index pour la table `signalement`
+--
+ALTER TABLE `signalement`
+  ADD PRIMARY KEY (`Id_signalement`);
 
 --
 -- Index pour la table `user`
@@ -192,13 +231,25 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT pour la table `annonce`
 --
 ALTER TABLE `annonce`
-  MODIFY `Id_annonce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `Id_annonce` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT pour la table `marque`
 --
 ALTER TABLE `marque`
   MODIFY `Id_marque` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT pour la table `photo`
+--
+ALTER TABLE `photo`
+  MODIFY `Id_Photo` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT pour la table `signalement`
+--
+ALTER TABLE `signalement`
+  MODIFY `Id_signalement` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `user`
