@@ -43,7 +43,7 @@
 			echo '
 				<h1>Les bon plans</h1>
 				<a href="index.php?page=1">
-					<img src="image/home.png" height="100" width="100" alt="Page d accueil">
+					<img src="Vue/Asset/Image/Home.png" height="100" width="100" alt="Page d accueil">
 				</a>
 				<a href="index.php?page=2">
 					<img src="image/client.png" height="100" width="100" alt="Annonce">
@@ -55,10 +55,10 @@
 					<img src="image/technicien.png" height="100" width="100" alt="Ajouter une annoce">
 				</a>
 				<a href="index.php?page=5">
-					<img src="image/intervention.png" height="100" width="100" alt="Mon Compte">
+					<img src="Vue/Asset/Image/client.png" height="100" width="100" alt="Mon Compte">
 				</a>
-				<a href="index.php?page=6">
-					<img src="image/deconnexion.png" height="100" width="100" alt="Déconnexion">
+				<a href="index.php?page=7">
+					<img src="Vue/Asset/Image/deconnexion.png" height="100" width="100" alt="Déconnexion">
 				</a>
 				</center>';
 				
@@ -69,7 +69,7 @@
 		} 
 		else 
 		{
-			$page = 1; //Page par défaut= index.php
+			$page = 1;
 		}
 		switch ($page)
 		{
