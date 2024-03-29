@@ -1,5 +1,5 @@
-<img src="image/" height="200" width="200">
-<h1>Connexion à l'intranet Orange</h1>
+<img src="Vue/Asset/Image/Logo_connexion.png" height="400" width="400">
+<h1>Connexion</h1>
 <form method="post">
 	<table>
 		<tr>
