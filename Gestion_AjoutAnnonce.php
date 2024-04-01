@@ -7,14 +7,12 @@ require_once ("Vue/Vue_AjoutAnnonce.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") 
 {
-    
-
     $idUser = $_SESSION['iduser'] ?? null;
     if($idUser !== null) 
     {
         $_POST['iduser'] = $idUser;
-        $unControleur->telechargerPhoto('Photo');
-        $unControleur->insertAnnonce($_POST);
+        $id_photo = $unControleur->telechargerPhoto('Photo');
+        $unControleur->insertAnnonce($_POST, $id_photo);
     }
     else 
     {
