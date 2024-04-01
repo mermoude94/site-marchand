@@ -4,6 +4,7 @@
 	class Controleur
 	{
 		private $unModele;
+		public $id_photo;
 		public function __construct()
 		{
 			$this->unModele= new Modele();
@@ -42,9 +43,9 @@
 		{
 			return $this->unModele->selectAllRef();
 		}
-		public function insertAnnonce($tab)
+		public function insertAnnonce($tab, $id_photo)
 		{
-			$this->unModele->insertAnnonce($tab);
+			$this->unModele->insertAnnonce($tab, $id_photo);
 		}
 		public function signaler($tab)
 		{
@@ -64,7 +65,7 @@
 		}
 		public function telechargerPhoto($nomDuChampFichier)
 		{
-			$this->unModele->telechargerPhoto($nomDuChampFichier);
+			return $this->unModele->telechargerPhoto($nomDuChampFichier);	
 		}
 	}
 ?>
