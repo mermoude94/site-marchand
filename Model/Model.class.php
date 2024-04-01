@@ -59,8 +59,8 @@
 		{
 			try
 			{
-				$requete_insertion = "INSERT INTO signalement (description, Id_annonce, idsignaler , idplaignant) VALUES (:description, :Id_annonce, :idsignaler, :idplaignant)";
-				$donnees_insertion = array(":description" => $tab['description'], ":Id_annonce" => $tab['Id_annonce'], ":idsignaler" => $tab['idsignaler'], ":idplaignant" => $tab['idplaignant']);
+				$requete_insertion = "INSERT INTO signalement (motif, Id_annonce, idsignaler , idplaignant) VALUES (:motif, :Id_annonce, :idsignaler, :idplaignant)";
+				$donnees_insertion = array(":motif" => $tab['description'], ":Id_annonce" => $tab['Id_annonce'], ":idsignaler" => $tab['idsignaler'], ":idplaignant" => $tab['idplaignant']);
 				$insertion = $this->unPDO->prepare($requete_insertion);
 				$insertion->execute($donnees_insertion);
 				echo "Signalement pris en compte."; 
@@ -93,15 +93,11 @@
 		{
     		try 
     		{
-        		// Préparer la requête de suppression
        			$requete = "DELETE FROM user WHERE email = :email";
         		$donnees = array(":email" => $email);
-        
-        		// Exécuter la requête de suppression
         		$suppression = $this->unPDO->prepare($requete);
        			$suppression->execute($donnees);
-        
-        		// Vérifier si des lignes ont été affectées (c'est-à-dire si un utilisateur a été supprimé)
+
         		if ($suppression->rowCount() > 0) 
 				{
             		echo "Utilisateur supprimé avec succès de la base de données.";
@@ -118,30 +114,48 @@
 		}
 		public function supprimerannonce($Post)
 		{
-			$Id_annonce = $Post;
-    		try 
-    		{	
-        		// Préparer la requête de suppression
-       			$requete = "DELETE FROM annonce WHERE Id_annonce = :Id_annonce;";
+			try
+			{		
+				$Id_annonce = $Post;
+				$requete = "SELECT p.nom_fichier FROM annonce a JOIN photo p ON a.Id_Photo = p.Id_Photo WHERE a.Id_annonce = :Id_annonce;";
         		$donnees = array(":Id_annonce" => $Id_annonce);
-        
-        		// Exécuter la requête de suppression
-        		$suppression = $this->unPDO->prepare($requete);
-       			$suppression->execute($donnees);
-				
-        		if ($suppression->rowCount() > 0) 
+        		$nom_fichier = $this->unPDO->prepare($requete);
+				$nom_fichier->execute($donnees);
+				$nom_fichier = $nom_fichier->fetch(PDO::FETCH_ASSOC);
+				$cheminImage = 'Vue/Asset/Photo/' . $nom_fichier["nom_fichier"];
+
+				if (file_exists($cheminImage)) 
 				{
-            		echo "Annonce supprimé avec succès.";
-        		} 
+					if (unlink($cheminImage))
+					{
+						$requete = "DELETE annonce, photo FROM annonce JOIN photo ON annonce.Id_Photo = photo.Id_Photo WHERE annonce.Id_annonce = :Id_annonce AND photo.nom_fichier = :nom_fichier;";
+						$donnees = array(":Id_annonce" => $Id_annonce , ":nom_fichier" => $nom_fichier["nom_fichier"]);
+						$nom_fichier = $this->unPDO->prepare($requete);
+						$nom_fichier->execute($donnees);
+						echo 'Annonce suprimé completement avec succer.';
+					} 
+					else 
+					{
+						echo 'Erreur lors de la suppression de l\'image.';
+					}
+				}
+				if (file_exists($cheminImage) == null)
+				{
+					echo 'Probleme chemin fichier';
+				} 
 				else 
 				{
-            		echo "Aucune annonce trouvé.";
-        		}
-    		} 
-    		catch (PDOException $e) 
-    		{
-        		echo "Erreur lors de la suppression de l'utilisateur : " . $e->getMessage();
-    		}
+					$requete = "DELETE annonce FROM annonce JOIN photo ON annonce.Id_Photo = photo.Id_Photo WHERE annonce.Id_annonce = :Id_annonce";
+					$donnees = array(":Id_annonce" => $Id_annonce);
+					$nom_fichier = $this->unPDO->prepare($requete);
+					$nom_fichier->execute($donnees);
+					echo 'Annonce suprimer avec succer.';
+				}
+			}
+			catch (PDOException $e) 
+			{
+				return false;
+			}
 		}
 
 		public function supprimercompte($email)
@@ -194,7 +208,6 @@
 			$select->execute();
 			return $select->fetchAll();
 		}
-		
 		public function selectIdAnnonces($idUtilisateur)
 		{
 			try {
@@ -251,19 +264,14 @@
 				$select->bindParam(":idAnnonce", $idAnnonce, PDO::PARAM_INT);
 				$select->execute();
 
-				// Gestion des erreurs PDO
 				if ($select === false) 
 				{
-					// Vous pouvez gérer l'erreur ici
 					return false;
 				}
-		
-				// Retourner le résultat
 				return $select->fetchAll(PDO::FETCH_ASSOC);
 			} 
 			catch (PDOException $e) 
 			{
-
 				return false;
 			}
 		}
@@ -271,59 +279,66 @@
 
 		function telechargerPhoto($nomDuChampFichier) 
 		{
-			$target_dir = "Photo/"; // Répertoire où vous souhaitez enregistrer les fichiers
-			$target_file = $target_dir . basename($_FILES["Photo"]["name"]); // Chemin complet du fichier téléchargé
+			$id_photo = null; 
+			$target_dir = "Vue/Asset/Photo/";
+			$target_file = $target_dir . basename($_FILES["Photo"]["name"]);
 			$uploadOk = 1;
-			$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION)); // Extension du fichier
+			$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 			
 			if ($uploadOk == 0) 
 			{
 				echo "Désolé, votre fichier n'a pas été téléchargé.";
-			// Si tout est correct, essayez de télécharger le fichier
 			} 
-			else 
+			else
 			{
-				if (move_uploaded_file($_FILES["Photo"]["tmp_name"], $target_file)) 
-				{
-					echo "Le fichier ". htmlspecialchars( basename( $_FILES["Photo"]["name"])). " a été téléchargé.";
+				if(move_uploaded_file($_FILES[$nomDuChampFichier]["tmp_name"], $target_file)) 
+				{					
+					try
+					{
+						$requete_insertion = "INSERT INTO Photo (nom_fichier) VALUES (:nom_photo);";
+						$donnees_insertion = array(":nom_photo" => basename($_FILES[$nomDuChampFichier]["name"]));	
+						$insertion = $this->unPDO->prepare($requete_insertion);
+						$insertion->execute($donnees_insertion);
+						$id_photo = $this->unPDO->lastInsertId();
+						return $id_photo;	
+					}
+					catch (PDOException $e) 
+					{
+						echo "Erreur lors de l'insertion dans la base de données : " . $e->getMessage();
+					}
+					
 				} 
 				else 
 				{
-					echo "Désolé, une erreur s'est produite lors du téléchargement de votre fichier.";
-				}
+					echo "Erreur lors du téléchargement du fichier.";
+				}		
 			}
-		}
-		
 
-		public function insertAnnonce($tab)
+		}
+		public function insertAnnonce($tab, $id_photo)
 		{
 
 			try 
 			{
-				// Vérifier que la référence correspond à la marque
 				$verification_ref = "SELECT COUNT(*) FROM ref WHERE Id_ref = :Id_ref AND Id_marque = :Id_marque";
-				$donnees_verification = array(
-					":Id_ref" => $tab['Id_ref'],
-					":Id_marque" => $tab['Id_marque']
-				);
-				
+				$donnees_verification = array(":Id_ref" => $tab['Id_ref'],":Id_marque" => $tab['Id_marque']);
 				$requete_verification = $this->unPDO->prepare($verification_ref);
 				$requete_verification->execute($donnees_verification);
 				$resultat_verification = $requete_verification->fetchColumn();
 				
 				if($resultat_verification == 0)
-				{
-					echo "Le modele ne correspond pas à la marque spécifiée.";
-					return; // Arrêter l'exécution de la fonction
-				}
+					{
+						echo "Le modele ne correspond pas à la marque spécifiée.";
+						return; // Arrêter l'exécution de la fonction
+					}
 
-				$requete_insertion = "INSERT INTO annonce (iduser, Id_marque, Id_ref, Prix, description) VALUES (:iduser, :Id_marque, :Id_ref, :Prix, :description);
-				";
+				$requete_insertion = "INSERT INTO annonce (iduser, Id_marque, Id_ref, Prix, description ,Id_Photo) VALUES (:iduser, :Id_marque, :Id_ref, :Prix, :description, :Id_Photo);";
 				$donnees_insertion = array(
 				":iduser" => $tab['iduser'],
 				":Id_marque" => $tab['Id_marque'],
 				":Id_ref" => $tab['Id_ref'],
 				":Prix" => $tab['Prix'],
+				":Id_Photo" => $id_photo,
 				":description" => $tab['description']
 				);
 			
