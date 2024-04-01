@@ -15,7 +15,6 @@ if(isset($_SESSION['post_data']))
                 {
                     $unControleur->supprimerannonce($_POST['Id_annonce']);
                     header("refresh:3;url=?page=3");
-                    echo "Annonce suprimer nous allons vous rediriger.";
                 }
         }
         else
@@ -28,13 +27,13 @@ if(isset($_SESSION['post_data']))
                     echo "<input type='hidden' name='idsignaler' value=".$annonce['iduser'].">";
                     echo "<input type='hidden' name='Id_annonce' value=".$annonce['Id_annonce'].">";
                     echo "<input type='text' name='description'>";
-                    echo "<input type='submit' _name='Valider' value='Valider'>";
+                    echo "<input type='submit' name='Valider' value='Valider'>";
                     echo "</form>";
                 }
             if(isset($_POST['Valider']))
                 {
                     $unControleur->signaler($_POST); 
-                    echo "Signalement pris en compte merci de votre aide.";       
+                    echo "Signalement pris en compte merci de votre aide.";   
                 }
         }   
 } 
