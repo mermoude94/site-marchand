@@ -43,7 +43,7 @@
 				<a href="index.php?page=2">
 					<img src="Vue/Asset/Image/Home.png" height="100" width="100" alt="Page d accueil">
 				</a>
-				<a href="index.php?page=3>
+				<a href="index.php?page=3">
 					<img src="image/client.png" height="100" width="100" alt="Annonce">
 				</a>
 				<a href="index.php?page=4">
@@ -58,9 +58,7 @@
 				<a href="index.php?page=8">
 					<img src="Vue/Asset/Image/deconnexion.png" height="100" width="100" alt="Déconnexion">
 				</a>
-				</center>';
-				
-				
+				</center>';		
 		}
 		if(isset($_GET['page']))
 		{
