@@ -31,8 +31,6 @@
     <label>Photo de la montre</label><br>
     <input type="file" name="Photo" accept="image/*"><br><br>
 
-
-
     <label for="Prix">Prix:</label><br>
     <input type="number" id="Prix" name="Prix" required><br><br>
 
