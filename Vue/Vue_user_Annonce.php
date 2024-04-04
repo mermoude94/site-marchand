@@ -6,6 +6,7 @@
 	require_once("Gestion_LocationUneAnnonce.php");
 		foreach ($lesAnnonces as $uneAnnonce) 
         {
+			
 			echo "<div class='UneAnnonce'>";
 				echo "<table>";
 					echo "<tr>";

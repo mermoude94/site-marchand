@@ -7,6 +7,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<link rel="stylesheet" href="Vue/Asset/css/Vue.css">
 </head>
 <body>
 	<center>
@@ -41,22 +42,22 @@
 		{
 			echo '
 				<a href="index.php?page=2">
-					<img src="Vue/Asset/Image/Home.png" height="100" width="100" alt="Page d accueil">
+					<img src="Vue/Asset/Image/accueil.png" height="100" width="100" alt="Page d accueil">
 				</a>
 				<a href="index.php?page=3">
-					<img src="image/client.png" height="100" width="100" alt="Annonce">
+					<img src="Vue/Asset/Image/montre.png" height="100" width="100" alt="Annonce">
 				</a>
 				<a href="index.php?page=4">
-					<img src="image/produit.png" height="100" width="100" alt="Mes annonce">
+					<img src="Vue/Asset/Image/MontreClient.png" height="100" width="100" alt="Mes annonce">
 				</a>
 				<a href="index.php?page=5">
-					<img src="image/technicien.png" height="100" width="100" alt="Ajouter une annoce">
+					<img src="Vue/Asset/Image/AjouterMontre.png" height="100" width="100" alt="Ajouter une annoce">
 				</a>
 				<a href="index.php?page=6">
-					<img src="Vue/Asset/Image/client.png" height="100" width="100" alt="Mon Compte">
+					<img src="Vue/Asset/Image/utilisateur.png" height="100" width="100" alt="Mon Compte">
 				</a>
 				<a href="index.php?page=8">
-					<img src="Vue/Asset/Image/deconnexion.png" height="100" width="100" alt="Déconnexion">
+					<img src="Vue/Asset/Image/se-deconnecter.png" height="100" width="100" alt="Déconnexion">
 				</a>
 				</center>';		
 		}
@@ -82,7 +83,7 @@
 			unset($_SESSION['email']);
 			header("Location: index.php?page=1");
 			break;
-		}	
+		}
 	?>
 </body>
 </html>

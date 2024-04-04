@@ -1,3 +1,4 @@
+<div class="Connexion">
 <img src="Vue/Asset/Image/Logo_connexion.png" height="400" width="400">
 <h1>Connexion</h1>
 <form method="post">
@@ -17,3 +18,5 @@
     </table>
 
     <a href="Vue/Vue_add_Client.php">Crée un compte</a>
+</form>
+</div>

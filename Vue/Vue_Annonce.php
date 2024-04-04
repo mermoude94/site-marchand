@@ -5,25 +5,29 @@
 	require_once("Gestion_LocationUneAnnonce.php");
 		foreach ($lesAnnonce as $uneAnnonce) 
         {
+			$UneImage = 'Vue/Asset/Photo/' . $uneAnnonce["nom_fichier"];
 			echo "<div class='UneAnnonce'>";
-				echo "<table>";
+						echo "<table>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['Id_annonce']."</td>";
+						echo "<img src=".$UneImage." alt='Annonce'>";
 						echo "</tr>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['nom_user']. $uneAnnonce['prenom_user']."</td>";
+						echo "<td>Nom: ".$uneAnnonce['nom_user']."</td>";
 						echo "</tr>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['nom_marque']."</td>";
+						echo "<td>Prenom: ".$uneAnnonce['prenom_user']."</td>";
 						echo "</tr>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['nom_ref']."</td>";
+						echo "<td>Marque: ".$uneAnnonce['nom_marque']."</td>";
 						echo "</tr>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['Prix']."Є</td>";
+						echo "<td>Modele: ".$uneAnnonce['nom_ref']."</td>";
 						echo "</tr>";
 						echo "<tr>";
-						echo "<td>".$uneAnnonce['description']."</td>";
+						echo "<td>Prix: ".$uneAnnonce['Prix']."Є</td>";
+						echo "</tr>";
+						echo "<tr>";
+						echo "<td>Description: ".$uneAnnonce['description']."</td>";
 						echo "</tr>";
 						echo "<form method='post'>";
 							echo "<tr>";

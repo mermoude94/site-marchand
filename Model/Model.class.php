@@ -179,14 +179,10 @@
 		}
 		public function selectAllAnnonce()
 		{
-			$requete="SELECT annonce.*, 
-			marque.nom AS nom_marque, 
-			ref.nom AS nom_ref, 
-			user.nom AS nom_user,
-			user.prenom AS prenom_user
-	 		FROM annonce
-	 		LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
-	 		LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
+			$requete="SELECT annonce.*, marque.nom AS nom_marque, ref.nom AS nom_ref, user.nom AS nom_user, user.prenom AS prenom_user, photo.nom_fichier AS nom_fichier FROM annonce 
+			LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
+	 		LEFT JOIN photo ON photo.nom_fichier = photo.nom_fichier
+			LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
 	 		LEFT JOIN user ON annonce.iduser = user.iduser;
 			";
 			$select=$this->unPDO->prepare($requete);
@@ -216,10 +212,12 @@
 							ref.nom AS nom_ref, 
 							user.nom AS nom_user,
 							user.prenom AS prenom_user
+							photo.nom_fichier AS nom_fichier,
 							FROM annonce
 							LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
 							LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
 							LEFT JOIN user ON annonce.iduser = user.iduser
+							LEFT JOIN photo ON photo.nom_fichier = photo.nom_fichier
 							WHERE annonce.iduser = :idUtilisateur;";
 		
 				$select = $this->unPDO->prepare($requete);
