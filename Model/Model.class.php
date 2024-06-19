@@ -139,18 +139,11 @@
 						echo 'Erreur lors de la suppression de l\'image.';
 					}
 				}
-				if (file_exists($cheminImage) == null)
-				{
-					echo 'Probleme chemin fichier';
-				} 
-				else 
-				{
 					$requete = "DELETE annonce FROM annonce JOIN photo ON annonce.Id_Photo = photo.Id_Photo WHERE annonce.Id_annonce = :Id_annonce";
 					$donnees = array(":Id_annonce" => $Id_annonce);
 					$nom_fichier = $this->unPDO->prepare($requete);
 					$nom_fichier->execute($donnees);
 					echo 'Annonce suprimer avec succer.';
-				}
 			}
 			catch (PDOException $e) 
 			{
@@ -160,31 +153,32 @@
 
 		public function supprimercompte($email)
 		{
-    		// Assurez-vous que l'utilisateur est connecté en vérifiant s'il existe dans la session
     		if(isset($_SESSION['email'])) 
 			{
-        		// Supprimer l'utilisateur de la base de données
         		$this->supprimeruser($_SESSION['email']);
         
-        		// Détruire toutes les variables de session
         		$_SESSION = array();
 
-        		// Finalement, détruire la session
         		session_destroy();
         
-        		// Rediriger l'utilisateur vers une page de déconnexion ou une autre page par exemple
         		header("Location: index.php?page=1");
-        		exit(); // Assurez-vous de terminer le script après la redirection
+        		exit();
     		} 
 		}
 		public function selectAllAnnonce()
 		{
-			$requete="SELECT annonce.*, marque.nom AS nom_marque, ref.nom AS nom_ref, user.nom AS nom_user, user.prenom AS prenom_user, photo.nom_fichier AS nom_fichier FROM annonce 
-			LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
-	 		LEFT JOIN photo ON photo.nom_fichier = photo.nom_fichier
-			LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
-	 		LEFT JOIN user ON annonce.iduser = user.iduser;
-			";
+			$requete="SELECT DISTINCT annonce.*, 
+			marque.nom AS nom_marque, 
+			ref.nom AS nom_ref, 
+			user.nom AS nom_user, 
+			user.prenom AS prenom_user, 
+			photo.nom_fichier AS nom_fichier 
+			FROM annonce 
+			LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque 
+			LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref 
+			LEFT JOIN user ON annonce.iduser = user.iduser 
+			LEFT JOIN photo ON annonce.Id_Photo = photo.Id_Photo 
+			WHERE annonce.iduser = user.iduser;";
 			$select=$this->unPDO->prepare($requete);
 			$select->execute();
 			return $select->fetchAll();
@@ -208,26 +202,23 @@
 		{
 			try {
 				$requete = "SELECT annonce.*,
-							marque.nom AS nom_marque, 
-							ref.nom AS nom_ref, 
-							user.nom AS nom_user,
-							user.prenom AS prenom_user
-							photo.nom_fichier AS nom_fichier,
-							FROM annonce
-							LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
-							LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
-							LEFT JOIN user ON annonce.iduser = user.iduser
-							LEFT JOIN photo ON photo.nom_fichier = photo.nom_fichier
-							WHERE annonce.iduser = :idUtilisateur;";
+				 marque.nom AS nom_marque, 
+				 ref.nom AS nom_ref, 
+				 user.nom AS nom_user,
+				 user.prenom AS prenom_user,
+				 photo.Id_Photo AS Id_Photo FROM annonce 
+				 LEFT JOIN marque ON annonce.Id_marque = marque.Id_marque
+				  LEFT JOIN ref ON annonce.Id_ref = ref.Id_ref
+				   LEFT JOIN user ON annonce.iduser = user.iduser
+				    LEFT JOIN photo ON annonce.Id_annonce = photo.Id_Photo 
+					WHERE annonce.iduser = :idUtilisateur;";
 		
 				$select = $this->unPDO->prepare($requete);
 				$select->bindParam(":idUtilisateur", $idUtilisateur, PDO::PARAM_INT);
 				$select->execute();
 		
-				// Gestion des erreurs PDO
 				if ($select === false) 
 				{
-					// Vous pouvez gérer l'erreur ici
 					return false;
 				}
 		
@@ -246,7 +237,8 @@
 			$idAnnonce = $Post['idAnnonce'];
 
 
-			try {
+			try 
+			{
 				$requete = "SELECT annonce.*,
 							marque.nom AS nom_marque, 
 							ref.nom AS nom_ref, 
