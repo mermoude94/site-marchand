@@ -1,1 +1,0 @@
-Select nom_fichier FROM photo LEFT JOIN annonce ON annonce.Id_annonce = photo.Id_Photo WHERE Id_annonce = 61;
